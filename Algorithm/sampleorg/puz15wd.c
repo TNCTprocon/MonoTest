@@ -1,30 +1,31 @@
 /**************************************************/
-/*   ï¼‘ï¼•ãƒ‘ã‚ºãƒ«/WDç”¨ãƒ†ãƒ¼ãƒ–ãƒ«ä½œæˆ        puz15wd.c */
+/*   ‚P‚TƒpƒYƒ‹/WD—pƒe[ƒuƒ‹ì¬        puz15wd.c */
 /*           Computer & Puzzle 2001/04 by takaken */
 /**************************************************/
 #include <stdio.h>
 #include <stdlib.h>
-#include <inttypes.h>
 
 #define  FALSE           0
 #define  TRUE            1
-#define  BOARD_WIDTH     4s
+#define  BOARD_WIDTH     4
 
 #define  WDTBL_SIZE  24964 /* WalkingDistance TableSize */
 
+typedef  unsigned __int64  u64;
+
 int   TABLE[BOARD_WIDTH][BOARD_WIDTH];
 int   WDTOP, WDEND;
-uint64_t   WDPTN[WDTBL_SIZE];                 /* å±€é¢ãƒ‘ã‚¿ãƒ¼ãƒ³ */
-char  WDTBL[WDTBL_SIZE];                 /* æœ€çŸ­æ‰‹æ•°(WD) */
-short WDLNK[WDTBL_SIZE][2][BOARD_WIDTH]; /* åŒæ–¹å‘ãƒªãƒ³ã‚¯ */
+u64   WDPTN[WDTBL_SIZE];                 /* ‹Ç–Êƒpƒ^[ƒ“ */
+char  WDTBL[WDTBL_SIZE];                 /* Å’Zè”(WD) */
+short WDLNK[WDTBL_SIZE][2][BOARD_WIDTH]; /* ‘o•ûŒüƒŠƒ“ƒN */
 
 /*********************************************/
-/* æ¢ç´¢çµæœã®ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ãƒ‡ã‚£ã‚¹ã‚¯ã«ä¿å­˜ã™ã‚‹    */
+/* ’TõŒ‹‰Ê‚Ìƒe[ƒuƒ‹‚ğƒfƒBƒXƒN‚É•Û‘¶‚·‚é    */
 /*********************************************/
 void WriteDisk(void)
 {
     int  i, j, k, work[8];
-    uint64_t table;
+    u64 table;
     char *filename = "puz15wd.db";
     FILE *fp;
 
@@ -48,14 +49,14 @@ void WriteDisk(void)
     fclose(fp);
 }
 /*********************************************/
-/* ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ç™»éŒ²ã¨åŒæ–¹å‘ãƒªãƒ³ã‚¯ã®å½¢æˆ        */
+/* ƒpƒ^[ƒ“‚Ì“o˜^‚Æ‘o•ûŒüƒŠƒ“ƒN‚ÌŒ`¬        */
 /*********************************************/
 void WriteTable(char count, int vect, int group)
 {
     int  i, j, k;
-    uint64_t  table;
+    u64  table;
 
-    /* åŒä¸€ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’æ¢ã™ */
+    /* “¯ˆêƒpƒ^[ƒ“‚ğ’T‚· */
     table =0;
     for (i=0; i<4; i++)
     for (j=0; j<4; j++)
@@ -63,7 +64,7 @@ void WriteTable(char count, int vect, int group)
     for (i=0; i<WDEND; i++)
         if (WDPTN[i] == table) break;
 
-    /* æ–°è¦ãƒ‘ã‚¿ãƒ¼ãƒ³ç™»éŒ² */
+    /* V‹Kƒpƒ^[ƒ““o˜^ */
     if (i == WDEND) {
         WDPTN[WDEND] = table;
         WDTBL[WDEND] = count;
@@ -73,21 +74,21 @@ void WriteTable(char count, int vect, int group)
             WDLNK[i][j][k] = WDTBL_SIZE;
     }
 
-    /* åŒæ–¹å‘ãƒªãƒ³ã‚¯ã‚’å½¢æˆã•ã›ã‚‹ */
+    /* ‘o•ûŒüƒŠƒ“ƒN‚ğŒ`¬‚³‚¹‚é */
     j = WDTOP - 1;
     WDLNK[j][vect    ][group] = (short)i;
     WDLNK[i][vect ^ 1][group] = (short)j;
 }
 /*********************************************/
-/* å¹…å„ªå…ˆæ¢ç´¢ã§WalkingDistanceã‚’æ±‚ã‚ã‚‹       */
+/* •—Dæ’Tõ‚ÅWalkingDistance‚ğ‹‚ß‚é       */
 /*********************************************/
 void Simuration(void)
 {
     int  i, j, k, space=0, piece;
     char count;
-    uint64_t  table;
+    u64  table;
 
-    /* åˆæœŸé¢ã‚’ä½œã‚‹ */
+    /* ‰Šú–Ê‚ğì‚é */
     for (i=0; i<4; i++)
     for (j=0; j<4; j++)
         TABLE[i][j] = 0;
@@ -98,23 +99,23 @@ void Simuration(void)
     for (j=0; j<4; j++)
         table = (table << 3) | TABLE[i][j];
 
-    /* åˆæœŸé¢ã‚’ç™»éŒ² */
+    /* ‰Šú–Ê‚ğ“o˜^ */
     WDPTN[0] = table;
     WDTBL[0] = 0;
     for (j=0; j<2; j++)
     for (k=0; k<4; k++)
         WDLNK[0][j][k] = WDTBL_SIZE;
 
-    /* å¹…å„ªå…ˆæ¢ç´¢ */
+    /* •—Dæ’Tõ */
     WDTOP=0; WDEND=1;
     while (WDTOP < WDEND) {
-        /* TABLE[][]å‘¼ã³å‡ºã— */
+        /* TABLE[][]ŒÄ‚Ño‚µ */
         table = WDPTN[WDTOP];
         count = WDTBL[WDTOP];
         WDTOP++;
         count++;
 
-        /* TABLE[][]å†ç¾ */
+        /* TABLE[][]ÄŒ» */
         for (i=3; i>=0; i--) {
             piece = 0;
             for (j=3; j>=0; j--) {
@@ -125,7 +126,7 @@ void Simuration(void)
             if (piece == 3) space = i;
         }
 
-        /* 0:é§’ã‚’ä¸Šã«ç§»å‹• */
+        /* 0:‹î‚ğã‚ÉˆÚ“® */
         if ((piece = space + 1) < 4) {
             for (i=0; i<4; i++) {
                 if (TABLE[piece][i]) {
@@ -138,7 +139,7 @@ void Simuration(void)
             }
         }
 
-        /* 1:é§’ã‚’ä¸‹ã«ç§»å‹• */
+        /* 1:‹î‚ğ‰º‚ÉˆÚ“® */
         if ((piece = space - 1) >= 0) {
             for (i=0; i<4; i++) {
                 if (TABLE[piece][i]) {

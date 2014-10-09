@@ -1,12 +1,11 @@
 /**************************************************/
-/*   ï¼‘ï¼•ãƒ‘ã‚ºãƒ«/åå¾©æ·±åŒ– with WD,ID     puz15sv.c */
+/*   ‚P‚TƒpƒYƒ‹/”½•œ[‰» with WD,ID     puz15sv.c */
 /*           Computer & Puzzle 2001/04 by takaken */
 /**************************************************/
-/* å®Ÿè¡Œã«ã¯puz15wd.cã§å¾—ã‚‰ã‚Œã‚‹puz15wd.dbãŒå¿…è¦ã§ã™*/
+/* Às‚É‚Ípuz15wd.c‚Å“¾‚ç‚ê‚épuz15wd.db‚ª•K—v‚Å‚·*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <inttypes.h>
 
 #define  FALSE           0
 #define  TRUE            1
@@ -16,7 +15,7 @@
 #define  WDTBL_SIZE  24964 /* WalkingDistance TableSize */
 #define  IDTBL_SIZE    106 /* InvertDistance TableSize  */
 
-
+typedef  unsigned __int64  u64;
 
 int  BOARD[BOARD_SIZE] = {
  0,15,14,13,  // sample
@@ -25,13 +24,13 @@ int  BOARD[BOARD_SIZE] = {
  4, 3, 2, 1
 };
 
-uint64_t WDPTN[WDTBL_SIZE];        /* ãƒ‘ã‚¿ãƒ¼ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ« */
-short WDLNK[WDTBL_SIZE][2][BOARD_WIDTH];  /* ãƒªãƒ³ã‚¯ */
-char WDTBL[WDTBL_SIZE];        /* WDç®—å‡ºãƒ†ãƒ¼ãƒ–ãƒ«   */
-char IDTBL[IDTBL_SIZE];        /* IDç®—å‡ºãƒ†ãƒ¼ãƒ–ãƒ«   */
-char RESULT[100];              /* è§£ç­”è¨˜éŒ²ãƒ†ãƒ¼ãƒ–ãƒ« */
-int DEPTH;                    /* æ¢ç´¢ã®æ·±ã•åˆ¶é™å€¤ */
-int MOVAL[BOARD_SIZE][5] = {  /* ç§»å‹•å¯èƒ½ãƒ†ãƒ¼ãƒ–ãƒ« */
+u64   WDPTN[WDTBL_SIZE];        /* ƒpƒ^[ƒ“ƒe[ƒuƒ‹ */
+short WDLNK[WDTBL_SIZE][2][BOARD_WIDTH];  /* ƒŠƒ“ƒN */
+char  WDTBL[WDTBL_SIZE];        /* WDZoƒe[ƒuƒ‹   */
+char  IDTBL[IDTBL_SIZE];        /* IDZoƒe[ƒuƒ‹   */
+char  RESULT[100];              /* ‰ğ“š‹L˜^ƒe[ƒuƒ‹ */
+int   DEPTH;                    /* ’Tõ‚Ì[‚³§ŒÀ’l */
+int   MOVAL[BOARD_SIZE][5] = {  /* ˆÚ“®‰Â”\ƒe[ƒuƒ‹ */
   1,  4, -1,  0,  0,
   2,  5,  0, -1,  0,
   3,  6,  1, -1,  0,
@@ -49,7 +48,7 @@ int MOVAL[BOARD_SIZE][5] = {  /* ç§»å‹•å¯èƒ½ãƒ†ãƒ¼ãƒ–ãƒ« */
  10, 15, 13, -1,  0,
  11, 14, -1,  0,  0
 };
-int  CONV[BOARD_SIZE] = {       /* ç¸¦æ¨ªå¤‰æ›ãƒ†ãƒ¼ãƒ–ãƒ« */
+int  CONV[BOARD_SIZE] = {       /* c‰¡•ÏŠ·ƒe[ƒuƒ‹ */
     0,
     1, 5, 9,13,
     2, 6,10,14,
@@ -58,12 +57,12 @@ int  CONV[BOARD_SIZE] = {       /* ç¸¦æ¨ªå¤‰æ›ãƒ†ãƒ¼ãƒ–ãƒ« */
 };
 
 /*********************************************/
-/* å„ç¨®å‚ç…§ãƒ†ãƒ¼ãƒ–ãƒ«æº–å‚™                      */
+/* ŠeíQÆƒe[ƒuƒ‹€”õ                      */
 /*********************************************/
 void Initialize(void)
 {
     int   i, j, k, nextd;
-    uint64_t   table;
+    u64   table;
     char  *filename = "puz15wd.db";
     FILE  *fp;
 
@@ -91,22 +90,22 @@ void Initialize(void)
     fclose(fp);
 }
 /*********************************************/
-/* åå¾©æ·±åŒ–ã«ã‚ˆã‚‹ãƒãƒƒã‚¯ãƒˆãƒ©ãƒƒã‚­ãƒ³ã‚°          */
+/* ”½•œ[‰»‚É‚æ‚éƒoƒbƒNƒgƒ‰ƒbƒLƒ“ƒO          */
 /*********************************************/
 int IDA(int space, int prev, int idx1o, int idx2o, int inv1o, int inv2o, int depth)
 {
     int  i, j, n, n2, piece, wd1, wd2, id1, id2, diff;
     int  idx1, idx2, inv1, inv2, lowb1, lowb2;
 
-    /* æ¬¡ã®æ‰‹ã‚’ç·ã¦è©¦ã—ã¦ã¿ã‚‹ */
+    /* Ÿ‚Ìè‚ğ‘‚Ä‚µ‚Ä‚İ‚é */
     depth++;
     for (i=0; ; i++) {
-        piece = MOVAL[space][i]; /* ç§»å‹•ã•ã›ã‚‹é§’ã®åº§æ¨™ */
-        if (piece == -1  ) break;              /* ç•ªå…µ */
-        if (piece == prev) continue; /* ç›´å‰æ‰‹æˆ»ã‚Šé˜²æ­¢ */
-        n = BOARD[piece];        /* ç§»å‹•ã•ã›ã‚‹é§’ã®æ•°å­— */
+        piece = MOVAL[space][i]; /* ˆÚ“®‚³‚¹‚é‹î‚ÌÀ•W */
+        if (piece == -1  ) break;              /* ”Ô•º */
+        if (piece == prev) continue; /* ’¼‘Oè–ß‚è–h~ */
+        n = BOARD[piece];        /* ˆÚ“®‚³‚¹‚é‹î‚Ì”š */
 
-        /* é§’ã®ç§»å‹•æ–¹å‘ã«ã‚ˆã‚Šæ¬¡å±€é¢ã®(WD,ID)ã‚’æ±‚ã‚ã‚‹ */
+        /* ‹î‚ÌˆÚ“®•ûŒü‚É‚æ‚èŸ‹Ç–Ê‚Ì(WD,ID)‚ğ‹‚ß‚é */
         idx1 = idx1o;
         idx2 = idx2o;
         inv1 = inv1o;
@@ -114,12 +113,12 @@ int IDA(int space, int prev, int idx1o, int idx2o, int inv1o, int inv2o, int dep
         diff = piece - space;
         if (diff > 0) {
             if (diff == 4) {
-                /* é§’ã‚’ä¸Šã«ç§»å‹• */
+                /* ‹î‚ğã‚ÉˆÚ“® */
                 for (j=space+1; j<piece; j++)
                     if (BOARD[j] > n) inv1--; else inv1++;
                 idx1 = WDLNK[idx1o][0][(n - 1) >> 2];
             } else {
-                /* é§’ã‚’å·¦ã«ç§»å‹• */
+                /* ‹î‚ğ¶‚ÉˆÚ“® */
                 n2 = CONV[n];
                 for (j=space+4; j<16; j+=4)
                     if (CONV[BOARD[j]] > n2) inv2--; else inv2++;
@@ -129,12 +128,12 @@ int IDA(int space, int prev, int idx1o, int idx2o, int inv1o, int inv2o, int dep
             }
         } else {
             if (diff == -4) {
-                /* é§’ã‚’ä¸‹ã«ç§»å‹• */
+                /* ‹î‚ğ‰º‚ÉˆÚ“® */
                 for (j=piece+1; j<space; j++)
                     if (BOARD[j] > n) inv1++; else inv1--;
                 idx1 = WDLNK[idx1o][1][(n - 1) >> 2];
             } else {
-                /* é§’ã‚’å³ã«ç§»å‹• */
+                /* ‹î‚ğ‰E‚ÉˆÚ“® */
                 n2 = CONV[n];
                 for (j=piece+4; j<16; j+=4)
                     if (CONV[BOARD[j]] > n2) inv2++; else inv2--;
@@ -144,7 +143,7 @@ int IDA(int space, int prev, int idx1o, int idx2o, int inv1o, int inv2o, int dep
             }
         }
 
-        /* ä¸‹é™å€¤(LowerBound) */
+        /* ‰ºŒÀ’l(LowerBound) */
         wd1 = WDTBL[idx1];
         wd2 = WDTBL[idx2];
         id1 = IDTBL[inv1];
@@ -152,12 +151,12 @@ int IDA(int space, int prev, int idx1o, int idx2o, int inv1o, int inv2o, int dep
         lowb1 = (wd1 > id1)? wd1: id1;
         lowb2 = (wd2 > id2)? wd2: id2;
 
-        /* ä¸‹é™å€¤æåˆˆã‚Šæ³•ã§ãƒã‚§ãƒƒã‚¯ã—ã¦ã‹ã‚‰å†å¸°å‘¼å‡ºã— */
+        /* ‰ºŒÀ’l}Š ‚è–@‚Åƒ`ƒFƒbƒN‚µ‚Ä‚©‚çÄ‹AŒÄo‚µ */
         if (depth + lowb1 + lowb2 <= DEPTH) {
             BOARD[piece] = 0;
             BOARD[space] = n;
             if (depth==DEPTH || IDA(piece, space, idx1, idx2, inv1, inv2, depth)) {
-                RESULT[depth - 1] = (char)n;  /* è§£ç­”æ‰‹é †ã‚’è¨˜éŒ²ã™ã‚‹ */
+                RESULT[depth - 1] = (char)n;  /* ‰ğ“šè‡‚ğ‹L˜^‚·‚é */
                 return TRUE;
             }
             BOARD[space] = 0;
@@ -167,16 +166,16 @@ int IDA(int space, int prev, int idx1o, int idx2o, int inv1o, int inv2o, int dep
     return FALSE;
 }
 /*********************************************/
-/* ï¼‘ï¼•ãƒ‘ã‚ºãƒ«ã‚’è§£ã                          */
+/* ‚P‚TƒpƒYƒ‹‚ğ‰ğ‚­                          */
 /*********************************************/
 int Search(void)
 {
     int  space, num1, num2, idx1, idx2, inv1, inv2, wd1, wd2;
     int  id1, id2, lowb1, lowb2, i, j, work[BOARD_WIDTH];
     int  cnvp[] = { 0, 4, 8,12, 1, 5, 9,13, 2, 6,10,14, 3, 7,11,15};
-    uint64_t  table;
+    u64  table;
 
-    /* è§£ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯ */
+    /* ‰ğ‚Ì‘¶İƒ`ƒFƒbƒN */
     for (space=0; BOARD[space]; space++);
     inv1 = (BOARD_WIDTH - 1) - space / BOARD_WIDTH;
     for (i=0; i<BOARD_SIZE; i++) {
@@ -186,7 +185,7 @@ int Search(void)
     }
     if (inv1 & 1) return FALSE;
 
-    /* åˆæœŸ IDX1 for WD */
+    /* ‰Šú IDX1 for WD */
     table = 0;
     for (i=0; i<BOARD_WIDTH; i++) {
         for (j=0; j<BOARD_WIDTH; j++) work[j] = 0;
@@ -200,7 +199,7 @@ int Search(void)
     }
     for (idx1=0; WDPTN[idx1]!=table; idx1++);
 
-    /* åˆæœŸ IDX2 for WD */
+    /* ‰Šú IDX2 for WD */
     table = 0;
     for (i=0; i<BOARD_WIDTH; i++) {
         for (j=0; j<BOARD_WIDTH; j++) work[j] = 0;
@@ -214,7 +213,7 @@ int Search(void)
     }
     for (idx2=0; WDPTN[idx2]!=table; idx2++);
 
-    /* åˆæœŸ INV1 for ID */
+    /* ‰Šú INV1 for ID */
     inv1 = 0;
     for (i=0; i<BOARD_SIZE; i++) {
         num1 = BOARD[i];
@@ -225,7 +224,7 @@ int Search(void)
         }
     }
 
-    /* åˆæœŸ INV2 for ID */
+    /* ‰Šú INV2 for ID */
     inv2 = 0;
     for (i=0; i<BOARD_SIZE; i++) {
         num1 = CONV[BOARD[cnvp[i]]];
@@ -236,7 +235,7 @@ int Search(void)
         }
     }
 
-    /* åˆæœŸ LowerBound */
+    /* ‰Šú LowerBound */
     wd1 = WDTBL[idx1];
     wd2 = WDTBL[idx2];
     id1 = IDTBL[inv1];
@@ -245,7 +244,7 @@ int Search(void)
     lowb2 = (wd2 > id2)? wd2: id2;
     printf("(WD=%d/%d,ID=%d/%d) LowerBound=%d\n", wd1, wd2, id1, id2, lowb1+lowb2);
 
-    /* IDAå®Ÿè¡Œ */
+    /* IDAÀs */
     for (DEPTH=lowb1+lowb2; ; DEPTH+=2) {
         printf("-%d",DEPTH);
         if (IDA(space, -1, idx1, idx2, inv1, inv2, 0)) break;
@@ -258,19 +257,19 @@ int main(void)
     time_t start_time = time(NULL);
     int  i;
 
-    /* å„å‚ç…§ãƒ†ãƒ¼ãƒ–ãƒ«æº–å‚™ */
+    /* ŠeQÆƒe[ƒuƒ‹€”õ */
     Initialize();
 
-    /* BOARDè¡¨ç¤º(å•é¡Œé¢è¡¨ç¤º) */
+    /* BOARD•\¦(–â‘è–Ê•\¦) */
     for (i=0; i<BOARD_SIZE; i++) {
         if (i && !(i % BOARD_WIDTH)) printf("\n");
         printf("%3d",BOARD[i]);
     }
     printf("\n");
 
-    /* æ¢ç´¢ã—ã¦çµæœã‚’è¡¨ç¤º */
+    /* ’Tõ‚µ‚ÄŒ‹‰Ê‚ğ•\¦ */
     if (Search()) {
-        printf("\n[%d moves] time=%dsec", DEPTH, (int)(time(NULL) - start_time));
+        printf("\n[%d moves] time=%dsec", DEPTH, time(NULL) - start_time);
         for (i=0; i<DEPTH; i++) {
             if (i % 10 == 0) printf("\n");
             printf(" %2d ", RESULT[i]);
