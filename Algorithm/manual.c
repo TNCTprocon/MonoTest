@@ -1,14 +1,17 @@
-#include <stdio.h>
+// #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <curses.h>
 #include <time.h>
+#include <unistd.h>
+
+#define getch() wgetch(stdscr)
 
 #define WID 4
 #define HEI 4
 
 // 関数宣言
 void prgen();		// 問題生成
-void solve();		// 手順生成
 
 // util
 void wh();			// 穴探し
@@ -23,39 +26,41 @@ void initialize() {
 }
 
 // 大域変数
+
+int flag_exit = 0;
+
 int now[WID][HEI];	// 問題用配列
 int next[WID][HEI];	// 次の場面
 int x = 0, y = 0;	// 穴座標
 int man = 0;		// マンハッタン距離の総和
 
 int main() {
-	initialize();
+	// initialize();
 
-	solve();
+	int swap1 = 0;
+	int swap2 = 0;
+	int c = 0;
+
+	while(flag_exit == 0) {
+		lg("スワップ対象を入力: ");
+		// scanf("%d %d", &swap1, &swap2);
+
+		// for(int i = 0; i < WID; i++) {
+		// 	for(int j = 0; j < HEI; j++) {
+
+		// 	}
+		// }
+		swap1 = getch();
+		printf("%d\n", swap1);
+		c++;
+
+		// debug
+		if(c == 10) {
+			flag_exit = 1;
+		}
+	}
 
 	return 0;
-}
-
-// 解答
-void solve() {
-	// 現在の場面からパネルが動く場合、次の場面は最大で4つである。
-	// つまり、解答探索とは、
-	// 場面をノードとした木構造において最後に元の並びに戻る経路を探索する事に等しい
-	// この場合、最短手順とは最短経路のことである
-	// 経路探索において最短経路を探す際の評価関数はマンハッタン距離の総和等がよい
-
-	// 穴の動きを見る&マンハッタン距離の総和を確認
-	// 上
-
-
-	// 下
-
-	// 左
-
-	// 右
-
-
-
 }
 
 // 穴探し
@@ -139,6 +144,8 @@ int mansum() {
 			man = man + manh;
 		}
 	}
+
+	return 0;
 }
 
 // util

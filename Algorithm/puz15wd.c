@@ -8,7 +8,7 @@
 
 #define  FALSE           0
 #define  TRUE            1
-#define  BOARD_WIDTH     4s
+#define  BOARD_WIDTH     4
 
 #define  WDTBL_SIZE  24964 /* WalkingDistance TableSize */
 
