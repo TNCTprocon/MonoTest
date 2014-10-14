@@ -1,6 +1,5 @@
 package com.gmail.quotenter.Algo;
 
-import com.gmail.quotenter.Algo.AStar.PuzzleGame;
 import com.gmail.quotenter.Algo.Dijkstra.Puzzle;
 
 /**
@@ -36,7 +35,7 @@ public class App
 	        {8, 12, 14, 10}
 		};
         
-        Puzzle puzzle = new Puzzle(3, 5);
+        Puzzle puzzle = new Puzzle(4, 4);
         puzzle.debug(face1);
     }
 }

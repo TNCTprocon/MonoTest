@@ -1,8 +1,10 @@
 package com.gmail.quotenter.Algo.Dijkstra;
 
+import java.awt.Point;
+
 public class Node {
 
-	int manhattanDistance;
+	int manhattanDistanceSum;
 	
 	int[][] face;
 	Puzzle puzzle = null;
@@ -13,10 +15,10 @@ public class Node {
 		this.face = puzzle;
 		this.WID = width;
 		this.HEI = height;
-		this.manhattanDistance = -1;
+		this.manhattanDistanceSum = -1;
 	}
 	
-	int getManhattanDistance() {
+	int getManhattanDistanceSum() {
 		int sum = 0;
 		int orgX = 0;
 		int orgY = 0;
@@ -41,17 +43,20 @@ public class Node {
 						);
 			}
 		}
-		
-		
-		return -1;
+		manhattanDistanceSum = sum;
+		return manhattanDistanceSum;
 	}
 	
-	void printFace() {
+	public int[][] getFace() {
+		return face;
+	}
+	
+	public Point getHole() {
 		for(int i = 0; i < HEI; i++) {
 			for(int j = 0; j < WID; j++) {
-				System.out.printf("%4d", face[i][j]);
-				if(j == WID - 1) System.out.println();
+				if(face[i][j] == 0) return new Point(i, j);
 			}
 		}
+		return null;
 	}
 }
