@@ -36,7 +36,7 @@ public class App
 	        {8, 12, 14, 10}
 		};
         
-        Puzzle puzzle = new Puzzle(4, 4);
+        Puzzle puzzle = new Puzzle(3, 5);
         puzzle.debug(face1);
     }
 }
