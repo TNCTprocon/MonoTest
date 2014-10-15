@@ -32,6 +32,7 @@ public class main {
 					schangecost, sheigth, swidth, slight;
 			int spritline, spritrow, selectnumber, selectcost, changecost, 
 					heigth, width, light;
+			byte[] brgb = new byte[3];
 			
 			
 			BufferedInputStream fis = null;
@@ -546,7 +547,8 @@ public class main {
 			 BufferedImage image = new BufferedImage(width, heigth, BufferedImage.TYPE_INT_BGR);
 			 for(int i = 0; i < heigth; i++){
 				 for(int j = 0; j < width; j++){
-					 
+					 fis.read(brgb);
+					 image.setRGB(j, i, createRGB(brgb[0], brgb[1], brgb[2]));
 				 }
 			 }
 			
@@ -598,7 +600,7 @@ public class main {
 	}
 	
 	//RGB情報をint型に変換するメソッド
-	private int createRGB(byte r, byte g, byte b){
+	public static int createRGB(byte r, byte g, byte b){
 		
 		return r <<16 | g << 8 | b;
 		
