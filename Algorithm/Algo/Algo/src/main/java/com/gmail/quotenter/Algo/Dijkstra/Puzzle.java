@@ -1,20 +1,32 @@
 package com.gmail.quotenter.Algo.Dijkstra;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Puzzle {
 
 	public static int WID = 0;
 	public static int HEI = 0;
+	public static int[][] face;
+	public static int swapCount = 0;
 	
-	public Puzzle(int width, int height) {
+	public Puzzle(int[][] face, int width, int height) {
 		this.WID = width;
 		this.HEI = height;
+		this.face = face;
 	}
 	
 	// Now loading...
 	public void solve() {
+		ArrayList<Node> nodeArray = new ArrayList<Node>();
+		Node head = new Node(face, WID, HEI);
+		int calc = 0;
 		
+		
+		while(true) {
+			
+			
+		}
 	}
 	
 	// デバッグ
@@ -68,7 +80,6 @@ public class Puzzle {
 	
 	// 16進変換機
 	public String[][] hexConverter(int[][] face) {
-//		ArrayList<String> array = new ArrayList<String>();
 		String[][] stringFace = new String[HEI][WID];
 		
 		for(int i = 0; i < HEI; i++) {

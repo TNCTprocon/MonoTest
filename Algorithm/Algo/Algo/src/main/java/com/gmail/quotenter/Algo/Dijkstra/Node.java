@@ -2,12 +2,18 @@ package com.gmail.quotenter.Algo.Dijkstra;
 
 import java.awt.Point;
 
+import junit.runner.Sorter.Swapper;
+
 public class Node {
 
 	int manhattanDistanceSum;
 	
-	int[][] face;
+	public int[][] face;
+	public int[][] nextFace;
+	public Point holePoint;
+	
 	Puzzle puzzle = null;
+	
 	public static int WID = 0;
 	public static int HEI = 0;
 	
@@ -15,9 +21,17 @@ public class Node {
 		this.face = puzzle;
 		this.WID = width;
 		this.HEI = height;
+		this.nextFace = null;
 		this.manhattanDistanceSum = -1;
+		this.holePoint = getHole();
 	}
 	
+	// 次局面取得
+	public int[][] getNextFace(int dir) {
+		return getSwappedFace(dir);
+	}
+	
+	// マンハッタン距離総和
 	int getManhattanDistanceSum() {
 		int sum = 0;
 		int orgX = 0;
@@ -47,10 +61,12 @@ public class Node {
 		return manhattanDistanceSum;
 	}
 	
+	// 面取得
 	public int[][] getFace() {
 		return face;
 	}
 	
+	// 穴探索
 	public Point getHole() {
 		for(int i = 0; i < HEI; i++) {
 			for(int j = 0; j < WID; j++) {
@@ -59,4 +75,45 @@ public class Node {
 		}
 		return null;
 	}
+	
+	// パネル入れ替え
+	/*
+	 * 0 : 上
+	 * 1 : 下
+	 * 2 : 左
+	 * 3 : 右
+	 */
+	public int[][] getSwappedFace(int dir) {
+		Point tmpPoint = holePoint;
+		
+		switch (dir) {
+		case 0:
+			tmpPoint.x--;
+			return getSwappedFace(holePoint, tmpPoint);
+		case 1:
+			tmpPoint.x++;
+			return getSwappedFace(holePoint, tmpPoint);
+		case 2:
+			tmpPoint.y--;
+			return getSwappedFace(holePoint, tmpPoint);
+		case 3:
+			tmpPoint.y++;
+			return getSwappedFace(holePoint, tmpPoint);
+		default:
+			return null;
+		}
+	}
+	public int[][] getSwappedFace(Point a, Point b) {
+		int[][] tmpFace = face;
+		int tmp = tmpFace[a.x][a.y];
+		
+		try {
+			tmpFace[a.x][a.y] = tmpFace[b.x][b.y];
+			tmpFace[b.x][b.y] = tmp;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tmpFace;
+	}
+	
 }

@@ -8,6 +8,7 @@ import com.gmail.quotenter.Algo.Dijkstra.Puzzle;
  *	命名則	: パズル自体	Puzzle	Puzzle
  *			: 各局面		int[][]	face
  *			: ノード		Node	node
+ *			: パーツ		Panel	panel
  */
 public class App 
 {
@@ -35,7 +36,7 @@ public class App
 	        {8, 12, 14, 10}
 		};
         
-        Puzzle puzzle = new Puzzle(4, 4);
+        Puzzle puzzle = new Puzzle(face1, 4, 4);
         puzzle.debug(face1);
     }
 }
