@@ -1,16 +1,9 @@
 package takahiro;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.File;
+import java.io.*;
+
+import javax.imageio.ImageIO;
 
 public class main {
 	public static void main(String[] args){
@@ -551,6 +544,10 @@ public class main {
 					 image.setRGB(j, i, createRGB(brgb[0], brgb[1], brgb[2]));
 				 }
 			 }
+			 
+			 String cfilename = "test.jpg";
+			 File f = new File("/Users/takahiro/Git/AutoProgram/puzzle/src/takahiro/picture/" + cfilename);
+			 ImageIO.write(image, "jpg", f);
 			
 			//System.out.println(String.valueOf((char)spritline[0]) + String.valueOf((char)spritline[1]));
 			
@@ -567,30 +564,6 @@ public class main {
 			System.out.println(Integer.toHexString((btype[0])));
 			System.out.println(type);
 			
-			if(btype[0] == 0x50)
-				System.out.println("true");
-			/*
-			byte[] test = new byte[1];
-			fis.read(test);
-			System.out.println(Integer.toHexString(test[0]));
-			fis.read();
-			fis.read();
-			fis.read(test);
-			System.out.println(Integer.toHexString(test[0]));
-			
-			
-			System.out.println(Integer.toHexString((width[0])));
-			System.out.println(Integer.toHexString((width[1])));
-			System.out.println(Integer.toHexString((width[2])));
-			*/
-			
-			String sprit, select, cost, pix;
-			
-			for(int i = 0; i < 5; i++){
-				if(i == 0){
-					//while(fileinput.read() != );
-				}
-			}
 			
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
