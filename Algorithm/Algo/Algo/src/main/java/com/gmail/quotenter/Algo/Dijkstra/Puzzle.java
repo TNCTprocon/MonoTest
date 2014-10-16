@@ -19,12 +19,22 @@ public class Puzzle {
 	// Now loading...
 	public void solve() {
 		ArrayList<Node> nodeArray = new ArrayList<Node>();
+		ArrayList<Node> answerArray = new ArrayList<Node>();
 		Node head = new Node(face, WID, HEI);
+		Node currentNode = head;
 		int calc = 0;
 		
+//		nodeArray.add(currentNode);
+//		currentNode.getManhattanDistanceSum();
 		
-		while(true) {
-			
+		Node doneNode = head;
+		
+		currentNode.cost = 0;
+		currentNode.used = true;
+		answerArray.add(currentNode);
+		boolean flag = false;
+		while(flag == true) {
+			doneNode = null;
 			
 		}
 	}

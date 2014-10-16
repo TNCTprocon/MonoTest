@@ -11,6 +11,8 @@ public class Node {
 	public int[][] face;
 	public int[][] nextFace;
 	public Point holePoint;
+	public int cost = -1;
+	public boolean used = false;
 	
 	Puzzle puzzle = null;
 	
@@ -23,6 +25,7 @@ public class Node {
 		this.HEI = height;
 		this.nextFace = null;
 		this.manhattanDistanceSum = -1;
+		calcManhattanDistanceSum();
 		this.holePoint = getHole();
 	}
 	
@@ -32,7 +35,10 @@ public class Node {
 	}
 	
 	// マンハッタン距離総和
-	int getManhattanDistanceSum() {
+	public int getManhattanDistanceSum() {
+		return this.manhattanDistanceSum;
+	}
+	void calcManhattanDistanceSum() {
 		int sum = 0;
 		int orgX = 0;
 		int orgY = 0;
@@ -58,7 +64,6 @@ public class Node {
 			}
 		}
 		manhattanDistanceSum = sum;
-		return manhattanDistanceSum;
 	}
 	
 	// 面取得
