@@ -1,4 +1,4 @@
-package com.gmail.quotenter.Algo.AStar;
+package com.gmail.quotenter.Algo.AStar2;
 
 import java.awt.Point;
 import java.util.Vector;
@@ -32,7 +32,7 @@ public class PuzzleGame {
         /*Make Sure it has Space in it And Get It*/
         Point spaceCell = getSpacePoint(puzzle);
         if (spaceCell == null) {
-            throw new Exception("where is the space?  :-) ");
+            throw new Exception("where is the space?");
         }
         
         /*Create Puzzle*/

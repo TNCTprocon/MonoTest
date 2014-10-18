@@ -1,4 +1,4 @@
-package com.gmail.quotenter.Algo.AStar;
+package com.gmail.quotenter.Algo.AStar2;
 
 import java.awt.Point;
 import java.util.Vector;

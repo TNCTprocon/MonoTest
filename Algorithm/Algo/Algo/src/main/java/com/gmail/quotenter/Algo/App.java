@@ -1,6 +1,6 @@
 package com.gmail.quotenter.Algo;
 
-import com.gmail.quotenter.Algo.Dijkstra.Puzzle;
+import com.gmail.quotenter.Algo.AStar2.*;
 
 /**
  * Hello world!
@@ -35,8 +35,11 @@ public class App
 	        {5, 13, 2, 11},
 	        {8, 12, 14, 10}
 		};
+
         
-        Puzzle puzzle = new Puzzle(face1, 4, 4);
-        puzzle.debug(face1);
+//        Puzzle.printIntFace(face1);
+//        Puzzle puzzle = new Puzzle(face3, 4, 4);
+//        puzzle.setFirstFace(puzzle.getRandomFace());
+//        puzzle.solve();
     }
 }
