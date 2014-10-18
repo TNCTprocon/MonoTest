@@ -548,8 +548,8 @@ public class main {
 				 }
 			 }
 			 
-			 String cfilename = "test.jpg";
-			 File f = new File("/Users/takahiro/Git/AutoProgram/src/takashima/" + cfilename);
+			 String cfilename = "test2.jpg";
+			 File f = new File(/*"/Users/takahiro/Git/AutoProgram/src/takashima/" + */cfilename);
 			 ImageIO.write(image, "jpg", f);
 			
 			//System.out.println(String.valueOf((char)spritline[0]) + String.valueOf((char)spritline[1]));
@@ -807,7 +807,6 @@ public class main {
 			System.out.println(type);
 			
 			fis.close();
-			
 			
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
