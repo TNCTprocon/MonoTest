@@ -39,7 +39,7 @@ public class ClientLib {
 				con.setDoOutput(true);
 				con.setRequestMethod("POST");
 
-				// Body•”‘‚«‚İ
+				// Writing Body
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 						con.getOutputStream(), StandardCharsets.UTF_8));
 				bw.write(bodyString);
